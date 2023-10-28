@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blog Post List</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+</head>
+<body>
+    <header>
+        
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Blog | GridFlow |</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                <li class="nav-item active">
+                  <a class="nav-link" href="{% url 'post_list' %}">Home <span class="sr-only">(current)</span></a>
+                </li>
+              </ul>
+            </div>
+            {% if user.is_authenticated %}
+            <span class="navbar-text">
+                Welcome, {{ user.username }}!
+                <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
+            </span>
+            {% else %}
+            <span class="navbar-text">
+                <a class="btn btn-primary" href="{% url 'login' %}">Login</a>
+                <a class="btn btn-primary" href="{% url 'signup' %}">Sign Up</a>
+            </span>
+            {% endif %}
+          </nav>
+    </header>
+<div class="d-flex">
+    <div class="card d-flex flex-row justify-content-center" style="width: 50rem;">
+        {% for post in posts %}
+        <div class="card-body mx-auto justify-content-center">
+            <h5 class="card-title">{{ post.title }}</h5>
+            <p class="card-text">Created on {{ post.created_at }}</p>
+            <a href="{% url 'post_detail' pk=post.pk %}">See More</a>
+            <hr>
+        </div>
+        {% empty %}
+            <li>No blog posts available.</li>
+        {% endfor %}
+    </div>
+</div>
+    <a class="btn btn-success" href="{% url 'post_new' %}">Create a New Post</a>
+</body>
+</html>
